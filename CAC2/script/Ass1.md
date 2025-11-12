@@ -60,3 +60,45 @@ Modélisation: essais rapides avec KNN, régression logistique multi-classe, SVM
 Formats pratiques: les ensembles d’exemples Iris sont fréquemment fournis en CSV ou ARFF; les outils Python (pandas, scikit-learn) et R disposent de téléchargements et d’exemples d’implémentation faciles.
 
 Si vous précisez ce que vous souhaitez faire exactement avec ce dataset (par exemple: charger les données dans votre environnement, comparer des modèles, visualiser les distributions, ou récupérer des versions spécifiques des fichiers), je peux vous fournir des instructions pas-à-pas adaptées et des scripts prêtes-à-l’emploi.
+## CODE
+```pip install ucimlrepo
+```
+# Requirement already satisfied: ucimlrepo in /usr/local/lib/python3.12/dist-packages (0.0.7)
+Requirement already satisfied: pandas>=1.0.0 in /usr/local/lib/python3.12/dist-packages (from ucimlrepo) (2.2.2)
+Requirement already satisfied: certifi>=2020.12.5 in /usr/local/lib/python3.12/dist-packages (from ucimlrepo) (2025.10.5)
+Requirement already satisfied: numpy>=1.26.0 in /usr/local/lib/python3.12/dist-packages (from pandas>=1.0.0->ucimlrepo) (2.0.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.12/dist-packages (from pandas>=1.0.0->ucimlrepo) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas>=1.0.0->ucimlrepo) (2025.2)
+Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas>=1.0.0->ucimlrepo) (2025.2)
+Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.8.2->pandas>=1.0.0->ucimlrepo) (1.17.0)
+## CODE
+```from ucimlrepo import fetch_ucirepo 
+  
+# fetch dataset 
+iris = fetch_ucirepo(id=53) 
+  
+# data (as pandas dataframes) 
+X = iris.data.features 
+y = iris.data.targets 
+  
+# metadata 
+print(iris.metadata) 
+  
+# variable information 
+print(iris.variables) 
+```
+# {'uci_id': 53, 'name': 'Iris', 'repository_url': 'https://archive.ics.uci.edu/dataset/53/iris', 'data_url': 'https://archive.ics.uci.edu/static/public/53/data.csv', 'abstract': 'A small classic dataset from Fisher, 1936. One of the earliest known datasets used for evaluating classification methods.\n', 'area': 'Biology', 'tasks': ['Classification'], 'characteristics': ['Tabular'], 'num_instances': 150, 'num_features': 4, 'feature_types': ['Real'], 'demographics': [], 'target_col': ['class'], 'index_col': None, 'has_missing_values': 'no', 'missing_values_symbol': None, 'year_of_dataset_creation': 1936, 'last_updated': 'Tue Sep 12 2023', 'dataset_doi': '10.24432/C56C76', 'creators': ['R. A. Fisher'], 'intro_paper': {'ID': 191, 'type': 'NATIVE', 'title': 'The Iris data set: In search of the source of virginica', 'authors': 'A. Unwin, K. Kleinman', 'venue': 'Significance, 2021', 'year': 2021, 'journal': 'Significance, 2021', 'DOI': '1740-9713.01589', 'URL': 'https://www.semanticscholar.org/paper/4599862ea877863669a6a8e63a3c707a787d5d7e', 'sha': None, 'corpus': None, 'arxiv': None, 'mag': None, 'acl': None, 'pmid': None, 'pmcid': None}, 'additional_info': {'summary': 'This is one of the earliest datasets used in the literature on classification methods and widely used in statistics and machine learning.  The data set contains 3 classes of 50 instances each, where each class refers to a type of iris plant.  One class is linearly separable from the other 2; the latter are not linearly separable from each other.\n\nPredicted attribute: class of iris plant.\n\nThis is an exceedingly simple domain.\n\nThis data differs from the data presented in Fishers article (identified by Steve Chadwick,  spchadwick@espeedaz.net ).  The 35th sample should be: 4.9,3.1,1.5,0.2,"Iris-setosa" where the error is in the fourth feature. The 38th sample: 4.9,3.6,1.4,0.1,"Iris-setosa" where the errors are in the second and third features.  ', 'purpose': 'N/A', 'funded_by': None, 'instances_represent': 'Each instance is a plant', 'recommended_data_splits': None, 'sensitive_data': None, 'preprocessing_description': None, 'variable_info': None, 'citation': None}}
+           name     role         type demographic  \
+0  sepal length  Feature   Continuous        None   
+1   sepal width  Feature   Continuous        None   
+2  petal length  Feature   Continuous        None   
+3   petal width  Feature   Continuous        None   
+4         class   Target  Categorical        None   
+
+                                         description units missing_values  
+0                                               None    cm             no  
+1                                               None    cm             no  
+2                                               None    cm             no  
+3                                               None    cm             no  
+4  class of iris plant: Iris Setosa, Iris Versico...  None             no  
+Produits payants Colab - Résilier les contrats ici
