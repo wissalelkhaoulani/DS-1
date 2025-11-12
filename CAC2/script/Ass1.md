@@ -5,6 +5,12 @@
 
 - **Nom du fichier** : Iris
 - **Data du jeux donnée** : A small classic dataset from Fisher, 1936. One of the earliest known datasets used for evaluating classification methods.
-- **Optimisation opérationnelle** : Réduire les coûts, améliorer l'efficacité
+- **Dataset information** : Each instance is a plant; This is one of the earliest datasets used in the literature on classification methods and widely used in statistics and machine learning.  The data set contains 3 classes of 50 instances each, where each class refers to a type of iris plant.  One class is linearly separable from the other 2; the latter are not linearly separable from each other.
+
+Predicted attribute: class of iris plant.
+
+This is an exceedingly simple domain.
+
+This data differs from the data presented in Fishers article (identified by Steve Chadwick,  spchadwick@espeedaz.net ).  The 35th sample should be: 4.9,3.1,1.5,0.2,"Iris-setosa" where the error is in the fourth feature. The 38th sample: 4.9,3.6,1.4,0.1,"Iris-setosa" where the errors are in the second and third features.  
 - **Avantage concurrentiel** : Anticiper les tendances du marché
 - **Innovation** : Développer de nouveaux produits et services
