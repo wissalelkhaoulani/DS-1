@@ -102,3 +102,20 @@ print(iris.variables)
 3                                               None    cm             no  
 4  class of iris plant: Iris Setosa, Iris Versico...  None             no  
 Produits payants Colab - Résilier les contrats ici
+## Représentation graphique
+```import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Combine features (X) and targets (y) into a single DataFrame for easier plotting
+iris_df = pd.concat([X, y], axis=1)
+
+# Rename the target column to 'species' for better readability in plots
+iris_df = iris_df.rename(columns={'class': 'species'})
+
+# Create a pair plot to visualize relationships between features, colored by species
+sns.pairplot(iris_df, hue='species', diag_kind='kde')
+plt.suptitle('Pair Plot of Iris Dataset Features by Species', y=1.02) # Add a title above the subplots
+plt.show()
+```
+
