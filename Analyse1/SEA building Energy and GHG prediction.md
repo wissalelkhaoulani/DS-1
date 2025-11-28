@@ -123,4 +123,106 @@ Données manquantes : X%
 Nombre de lignes : M (après suppression outliers)
 Données manquantes : 0%
 Pourcentage de données conservées : ~XX%
+## 5. ANALYSE EXPLORATOIRE
+## 5.1 Distribution des Variables
+- Consommation Énergétique (SiteEnergyUse)
+
+Distribution : Asymétrique positive (skewed right)
+Caractéristiques : Majorité des bâtiments consomment modérément, quelques gros consommateurs
+Médiane vs Moyenne : La médiane est inférieure à la moyenne, confirmant l'asymétrie
+
+- Intensité Énergétique (SiteEUI)
+
+Utilité : Normalise la consommation par la surface
+Interprétation : Mesure l'efficacité énergétique indépendamment de la taille
+Variabilité : Grande variation entre bâtiments de types différents
+
+- Score ENERGY STAR
+
+Échelle : 0 à 100 (100 = meilleure performance)
+Distribution : Relativement équilibrée avec pics autour de certaines valeurs
+Signification : Compare la performance du bâtiment à des bâtiments similaires au niveau national
+
+## 5.2 Statistiques Descriptives
+Les statistiques montrent :
+
+- Écarts-types élevés : Grande variabilité entre bâtiments
+- Valeurs minimales/maximales : Confirment la diversité du parc immobilier
+- Quartiles : Permettent d'identifier les bâtiments performants vs moins performants
+## 6. MATRICE DE CORRÉLATION
+## 6.1 Analyse des Corrélations
+Corrélations Fortes Attendues
+Surface et Consommation Totale (r ≈ 0.8 - 0.9)
+
+- Interprétation : Les grands bâtiments consomment plus d'énergie
+- Logique : Corrélation naturelle et attendue
+- Utilité : Confirme la nécessité de normaliser par la surface
+
+Consommation Énergétique et Émissions GES (r ≈ 0.9 - 0.95)
+
+- Interprétation : Plus un bâtiment consomme, plus il émet de GES
+- Importance : Lien direct entre efficacité énergétique et impact climatique
+- Politique publique : Justifie les programmes d'amélioration énergétique
+
+Corrélations Intéressantes
+Électricité vs Gaz Naturel (r ≈ 0.3 - 0.5)
+
+- Interprétation : Corrélation modérée, suggère des profils énergétiques variés
+- Exemples :
+Bâtiments avec chauffage électrique vs gaz
+Data centers (forte électricité, peu de gaz)
+Hôtels (équilibre électricité/gaz)
+
+- Score ENERGY STAR et Intensité Énergétique (r ≈ -0.6 à -0.8)
+
+- Interprétation : Corrélation négative attendue
+- Signification : Les bâtiments avec haute intensité énergétique ont des scores plus bas
+- Validation : Confirme la pertinence du score ENERGY STAR
+
+## 6.2 Implications pour la Modélisation
+- Multicolinéarité
+
+- Variables hautement corrélées peuvent causer des problèmes dans les modèles
+Nécessité de sélectionner soigneusement les features
+Considération pour des techniques de réduction de dimensionnalité si nécessaire
+
+Sélection de Features
+Les corrélations guident le choix des variables explicatives :
+
+Éviter d'utiliser ensemble des variables trop corrélées
+Privilégier les variables avec corrélation significative avec la cible
+Considérer les aspects pratiques (disponibilité des données)
+'''
+'print("\n\n5. MATRICE DE CORRÉLATION")
+print("-"*80)
+
+# Calculer la matrice de corrélation
+correlation_matrix = df_clean.corr()
+
+print("\nMatrice de corrélation:")
+print(correlation_matrix)
+
+# Visualisation de la matrice de corrélation
+plt.figure(figsize=(12, 10))
+sns.heatmap(correlation_matrix, 
+            annot=True, 
+            fmt='.2f', 
+            cmap='coolwarm', 
+            center=0,
+            square=True,
+            linewidths=1,
+            cbar_kws={"shrink": 0.8})
+plt.title('Matrice de Corrélation - Variables Énergétiques', 
+          fontsize=16, fontweight='bold', pad=20)
+plt.tight_layout()
+plt.savefig('02_matrice_correlation.png', dpi=300, bbox_inches='tight')
+print("\n✓ Graphique sauvegardé: 02_matrice_correlation.png")
+
+# Identifier les corrélations les plus fortes
+print("\nTop 10 des corrélations les plus fortes:")
+corr_pairs = correlation_matrix.unstack()
+corr_pairs = corr_pairs[corr_pairs < 1]  # Exclure les auto-corrélations
+corr_pairs = corr_pairs.sort_values(ascending=False).drop_duplicates()
+print(corr_pairs.head(10))
+'''
 
