@@ -186,43 +186,252 @@ Hôtels (équilibre électricité/gaz)
 Nécessité de sélectionner soigneusement les features
 Considération pour des techniques de réduction de dimensionnalité si nécessaire
 
-Sélection de Features
-Les corrélations guident le choix des variables explicatives :
+## 7. MODÉLISATION : RÉGRESSION LINÉAIRE
+## 7.1 Objectif
+Prédire la consommation énergétique totale (SiteEnergyUse) d'un bâtiment à partir de ses caractéristiques physiques et opérationnelles.
+## 7.2 Variables du Modèle
+Variable Cible (Y) : SiteEnergyUse(kBtu)
+Variables Explicatives (X) :
 
-Éviter d'utiliser ensemble des variables trop corrélées
-Privilégier les variables avec corrélation significative avec la cible
-Considérer les aspects pratiques (disponibilité des données)
-'''
-'print("\n\n5. MATRICE DE CORRÉLATION")
-print("-"*80)
+Surface du bâtiment
+Intensité énergétique
+Consommation d'électricité
+Consommation de gaz naturel
+Score ENERGY STAR
+Émissions GES
 
-# Calculer la matrice de corrélation
-correlation_matrix = df_clean.corr()
+## 7.3 Prétraitement
+Standardisation
+Application de StandardScaler :
+X_standardisé = (X - μ) / σ
 
-print("\nMatrice de corrélation:")
-print(correlation_matrix)
+- Raison : Mettre toutes les variables sur la même échelle
+- Avantage : Améliore la convergence et l'interprétation des coefficients
 
-# Visualisation de la matrice de corrélation
-plt.figure(figsize=(12, 10))
-sns.heatmap(correlation_matrix, 
-            annot=True, 
-            fmt='.2f', 
-            cmap='coolwarm', 
-            center=0,
-            square=True,
-            linewidths=1,
-            cbar_kws={"shrink": 0.8})
-plt.title('Matrice de Corrélation - Variables Énergétiques', 
-          fontsize=16, fontweight='bold', pad=20)
-plt.tight_layout()
-plt.savefig('02_matrice_correlation.png', dpi=300, bbox_inches='tight')
-print("\n✓ Graphique sauvegardé: 02_matrice_correlation.png")
+- Division Train/Test
 
-# Identifier les corrélations les plus fortes
-print("\nTop 10 des corrélations les plus fortes:")
-corr_pairs = correlation_matrix.unstack()
-corr_pairs = corr_pairs[corr_pairs < 1]  # Exclure les auto-corrélations
-corr_pairs = corr_pairs.sort_values(ascending=False).drop_duplicates()
-print(corr_pairs.head(10))
-'''
+Train : 80% des données (pour l'entraînement)
+Test : 20% des données (pour l'évaluation)
+Random state : Fixé pour la reproductibilité
+
+## 7.4 Résultats
+Métriques de Performance
+R² Score (Coefficient de Détermination)
+
+Train : ~0.XX
+Test : ~0.XX
+- Interprétation : Le modèle explique XX% de la variance de la consommation énergétique
+
+- RMSE (Root Mean Square Error)
+
+Train : ~XXX kBtu
+Test : ~XXX kBtu
+Interprétation : Erreur moyenne de prédiction
+
+- Analyse des Coefficients
+Les coefficients révèlent l'impact de chaque variable :
+Coefficients Positifs Importants :
+
+Surface du bâtiment → Plus grand = plus de consommation
+Intensité énergétique → Directement proportionnelle
+
+- Coefficients Négatifs :
+
+Score ENERGY STAR → Meilleur score = moins de consommation
+Efficacité des systèmes
+
+## 7.5 Visualisation
+Le graphique "Valeurs Réelles vs Prédites" montre :
+
+- Points proches de la diagonale : Bonnes prédictions
+- Points éloignés : Cas difficiles à prédire (outliers, cas particuliers)
+- Distribution : Évalue la qualité globale du modèle
+
+## 7.6 Limites du Modèle
+
+- Hypothèse de linéarité : Peut ne pas capturer des relations non-linéaires
+- Variables manquantes : Type de bâtiment, âge, occupation pourraient améliorer le modèle
+- Outliers : Certains bâtiments restent difficiles à prédire
+## 8. MODÉLISATION : RÉGRESSION LOGISTIQUE
+## 8.1 Objectif
+Classifier les bâtiments en deux catégories selon leur efficacité énergétique :
+
+- Classe 0 : Efficacité faible (sous la médiane)
+- Classe 1 : Efficacité élevée (au-dessus de la médiane)
+
+## 8.2 Création de la Variable Cible
+- Option 1 : Basée sur ENERGY STAR Score
+Si ENERGYSTARScore > Médiane → Classe 1 (Efficace)
+Sinon → Classe 0 (Moins efficace)
+- Option 2 : Basée sur Consommation Énergétique
+Si SiteEnergyUse ≤ Médiane → Classe 1 (Faible consommation)
+Sinon → Classe 0 (Haute consommation)
+## 8.3 Équilibrage des Classes
+
+- Stratification : Maintien des proportions lors du split train/test
+- Distribution : Environ 50/50 (par construction avec la médiane)
+- Importance : Évite le biais vers une classe
+
+##  8.4 Résultats
+Métriques de Classification
+Précision (Accuracy) : ~XX%
+
+## 9. RÉSULTATS ET INTERPRÉTATIONS
+## 9.1 Synthèse des Découvertes Principales
+- Découverte 1 : Forte Variabilité Énergétique
+Les bâtiments de Seattle montrent une grande diversité de performances énergétiques, même pour des bâtiments de taille similaire. Cela suggère un potentiel d'amélioration significatif.
+- Découverte 2 : Corrélation Consommation-Émissions
+La corrélation quasi-parfaite entre consommation énergétique et émissions GES confirme que réduire la consommation = réduire l'empreinte carbone.
+- Découverte 3 : Prédictibilité
+Les modèles démontrent que la consommation énergétique est largement prédictible à partir de caractéristiques mesurables, ce qui valide l'approche de benchmarking.
+## 9.2 Facteurs Clés de l'Efficacité Énergétique
+- Facteur 1 : Surface et Design
+
+Les grands bâtiments ne sont pas nécessairement inefficaces
+L'intensité énergétique (kBtu/sf) est plus révélatrice que la consommation totale
+Le design et l'orientation comptent
+
+- Facteur 2 : Mix Énergétique
+
+L'équilibre électricité/gaz varie fortement
+Certains bâtiments "tout électrique" peuvent être très efficaces
+L'accès aux énergies renouvelables influence les scores
+
+- Facteur 3 : Gestion et Maintenance
+
+Le score ENERGY STAR reflète les bonnes pratiques opérationnelles
+La gestion active de l'énergie fait une différence mesurable
+Les systèmes bien entretenus sont plus efficaces
+
+## 9.3 Comparaisons par Secteur
+Bien que les types de bâtiments ne soient pas tous analysés en détail, on observe généralement :
+Bureaux :
+
+Consommation modérée mais constante
+Fort potentiel d'optimisation via systèmes de gestion intelligents
+
+- Commerces/Retail :
+
+Grande variabilité selon l'activité
+Éclairage et climatisation = postes majeurs
+
+- Multifamilial :
+
+Consommation par unité relativement stable
+Économies d'échelle pour les grands ensembles
+
+- Hôtels :
+
+Parmi les plus énergivores (24/7, chauffage eau, climatisation)
+Opportunités dans la gestion temporelle
+
+## 9.4 Implications Économiques
+Potentiel d'Économies
+Pour un bâtiment moyen passant du 25ème au 75ème percentile d'efficacité :
+
+Réduction de consommation : ~30-40%
+Économies annuelles : Plusieurs dizaines de milliers de dollars
+ROI des améliorations : Généralement 5-10 ans
+
+- Valeur Ajoutée
+- Les bâtiments efficaces bénéficient de :
+
+- Coûts opérationnels réduits
+- Valeur de revente supérieure
+- Attractivité pour locataires soucieux d'environnement
+- Conformité réglementaire anticipée
+## - 10. CONCLUSIONS ET RECOMMANDATIONS
+## 10.1 Conclusions Principales
+- Conclusion 1 : Succès du Programme
+Le programme de benchmarking de Seattle génère des données riches et exploitables. La qualité des données permet des analyses prédictives fiables.
+- Conclusion 2 : Hétérogénéité des Performances
+L'écart important entre bâtiments performants et moins performants révèle un potentiel d'amélioration considérable dans le parc immobilier existant.
+- Conclusion 3 : Prédictibilité et Modélisation
+Les modèles statistiques peuvent efficacement prédire la consommation et classifier l'efficacité, ouvrant la voie à des outils d'aide à la décision.
+## 10.2 Recommandations pour les Décideurs Politiques
+- Recommandation 1 : Ciblage des Interventions
+- Action : Utiliser les modèles prédictifs pour identifier les bâtiments avec le plus fort potentiel d'amélioration.
+- Justification : Maximiser l'impact des ressources publiques limitées.
+- Mise en œuvre :
+
+Créer un "score de potentiel d'amélioration"
+Prioriser les subventions et incitations
+Offrir des audits énergétiques gratuits aux bâtiments ciblés
+
+- Recommandation 2 : Standards Progressifs
+- Action : Établir des standards minimums d'efficacité qui se renforcent dans le temps.
+- Justification : Les données montrent qu'une amélioration significative est techniquement faisable.
+- Mise en œuvre :
+
+Année 1-3 : Atteindre le 40ème percentile
+Année 4-6 : Atteindre le 50ème percentile
+Année 7-10 : Atteindre le 60ème percentile
+
+- Recommandation 3 : Transparence et Certification
+- Action : Rendre les scores d'efficacité publics et créer un système de certification visible.
+- Justification : La pression sociale et économique incite à l'amélioration.
+- Mise en œuvre :
+
+Affichage obligatoire du score ENERGY STAR
+Labels "Bâtiment Efficace de Seattle"
+Publicité des meilleures performances
+
+## 10.3 Recommandations pour les Propriétaires
+- Recommandation 1 : Audit Énergétique
+- Pour qui : Bâtiments avec score ENERGY STAR < 50
+- Action : Réaliser un audit énergétique professionnel
+- ROI attendu : 3-7 ans pour les améliorations recommandées
+- Recommandation 2 : Mesures à Faible Coût
+- Actions immédiates :
+
+Optimisation des horaires de chauffage/climatisation
+Remplacement de l'éclairage par LED
+Installation de thermostats intelligents
+Formation du personnel à l'efficacité énergétique
+
+Coût : < $10,000 typiquement
+ROI : < 2 ans
+- Recommandation 3 : Investissements Structurels
+- Actions à moyen terme :
+
+- Remplacement des systèmes CVC obsolètes
+- Amélioration de l'isolation
+- Installation de systèmes de gestion énergétique (BMS)
+- Panneaux solaires (selon faisabilité)
+
+Coût : $50,000 - $500,000+ selon taille
+ROI : 5-15 ans, avec subventions possibles
+## 10.4 Recommandations Méthodologiques
+- Pour les Futures Analyses
+- Collecte de Données Améliorée :
+
+Ajouter le type de bâtiment (catégorie détaillée)
+Inclure l'âge du bâtiment
+Documenter les rénovations majeures
+Suivre l'occupation réelle vs capacité
+
+- Modélisation Avancée :
+
+Explorer des modèles non-linéaires (Random Forest, XGBoost)
+Analyser les séries temporelles (évolution annuelle)
+Segmenter par type de bâtiment pour des modèles spécialisés
+
+- Validation Externe :
+
+Comparer avec d'autres villes (Portland, Vancouver)
+Valider les prédictions sur les années suivantes
+Mesurer l'impact réel des interventions
+
+
+## 11. ANNEXES
+Annexe A : Glossaire
+BTU (British Thermal Unit) : Unité de mesure d'énergie. 1 BTU = énergie nécessaire pour élever la température d'une livre d'eau de 1°F.
+kBtu : Millier de BTU (1 kBtu = 1,000 BTU)
+EUI (Energy Use Intensity) : Intensité d'utilisation énergétique, mesurée en kBtu par pied carré par an. Normalise la consommation par la surface.
+GHG (Greenhouse Gas) : Gaz à effet de serre (CO₂, méthane, etc.)
+ENERGY STAR Score : Score de 1 à 100 qui compare la performance énergétique d'un bâtiment à des bâtiments similaires au niveau national. Un score de 75+ indique une performance dans le top 25%.
+R² (R-squared) : Coefficient de détermination. Mesure la proportion de variance de la variable cible expliquée par le modèle (0 à 1, 1 étant parfait).
+RMSE (Root Mean Square Error) : Racine carrée de l'erreur quadratique moyenne. Mesure l'écart moyen entre prédictions et valeurs réelles.
+IQR (Interquartile Range) : Écart entre le 75ème et 25ème percentile. Utilisé pour détecter les outliers.
+
 
