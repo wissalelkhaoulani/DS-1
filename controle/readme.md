@@ -461,10 +461,9 @@ mutual-funds-analysis/
 
 ## 👥 Auteurs
 
-**Votre Nom**  
-📧 Email : votre.email@example.com  
-💼 LinkedIn : [linkedin.com/in/votre-profil](https://linkedin.com/in/votre-profil)  
-🐙 GitHub : [@votre-username](https://github.com/votre-username)
+**EL KHAOULANI WISSALE**  
+📧 Email : elkhaoulani.wissale.encg@uhp.ac.ma    
+🐙 GitHub :(https://github.com/wissalelkhaoulani/DS-1/edit/main/controle/readme.md)
 
 ---
 
@@ -522,16 +521,4 @@ in the Software without restriction...
 
 ---
 
-## 📞 Contact & Support
 
-**Questions ?** Ouvrez une [issue](https://github.com/votre-username/mutual-funds-analysis/issues)  
-**Bugs ?** Signalez-les via [bug report](https://github.com/votre-username/mutual-funds-analysis/issues/new?template=bug_report.md)  
-**Suggestions ?** Proposez une [feature request](https://github.com/votre-username/mutual-funds-analysis/issues/new?template=feature_request.md)
-
----
-
-<div align="center">
-
-**⭐ Si ce projet vous a aidé, n'hésitez pas à lui donner une étoile ! ⭐**
-
-Made with ❤️ and ☕ by [Votre Nom]
