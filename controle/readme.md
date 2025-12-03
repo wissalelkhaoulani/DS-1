@@ -1,7 +1,7 @@
 # Cours de science de données 
 # EL KHAOULANI WISSALE
 # Ecole national de commerce et de gestion
-<img src="WISSALE.jpeg" style="height:264px;margin-right:232px"/> 
+<img src="WISSALE.jpeg" style="height:150px;margin-right:100px"/> 
 
 - ## Nom du fichier : US Funds dataset from Yahoo Finance
 - # 📊 Analyse des Mutual Funds & ETFs
